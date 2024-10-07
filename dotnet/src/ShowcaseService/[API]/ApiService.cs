@@ -2,7 +2,6 @@
 using System.Security;
 using System.Data.AccessControl;
 using System.Linq;
-using Security;
 
 namespace MedicalResearch.SubjectData {
 
@@ -32,12 +31,15 @@ namespace MedicalResearch.SubjectData {
     }
 
     public string[] GetPermittedAuthScopes(out int authState) {
-      var mac = AccessControlContext.Current;
+      //var mac = AccessControlContext.Current;
 
-      string[] scopes = mac.EffectivePermissions.Select(p => "API:" + p).Union(mac.ExportClearences()).ToArray();
-      authState = mac.AuthStateCode;
+      //string[] scopes = mac.EffectivePermissions.Select(p => "API:" + p).Union(mac.ExportClearences()).ToArray();
+      //authState = mac.AuthStateCode;
 
-      return scopes;
+      //return scopes;
+
+      authState = 0;
+      return new string[] { };
     }
 
   }

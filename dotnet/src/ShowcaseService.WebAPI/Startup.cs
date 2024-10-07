@@ -16,6 +16,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Writers;
 using MedicalResearch.SubjectData.Model;
 using Security.AccessTokenHandling;
+using MedicalResearch.SubjectData.StoreAccess;
+using System.Web.UJMW;
 
 namespace MedicalResearch.SubjectData.WebAPI {
 
@@ -57,22 +59,28 @@ namespace MedicalResearch.SubjectData.WebAPI {
       services.AddSingleton<ISubjectConsumeService>(apiService);
       //services.AddSingleton<ISubjectSubmissionService>(apiService);
 
-      //...
+      services.AddSingleton<ISubjectStore>(new SubjectStore());
+      services.AddSingleton<ISubjectSiteAssignmentStore>(new SubjectSiteAssignmentStore());
 
+      services.AddDynamicUjmwControllers(
+        (c) => {
 
+          c.AddControllerFor<ISubjectStore>("sdr/v2/store/Subjects");
+          c.AddControllerFor<ISubjectSiteAssignmentStore>("sdr/v2/store/SubjectSiteAssignments");
 
+          c.AddControllerFor<ISdrApiInfoService>("sdr/v2/SdrApiInfo");
+          c.AddControllerFor<ISdrEventSubscriptionService>("sdr/v2/SdrEventSubscription");
+          c.AddControllerFor<ISubjectConsumeService>("sdr/v2/SubjectConsume");
+          //c.AddControllerFor<ISubjectSubmissionService>("sdr/v2/SubjectSubmission");
 
-
-
-
-
-      services.AddControllers();
+        }
+      );
 
       services.AddSwaggerGen(c => {
         
         c.EnableAnnotations(true, true);
 
-        c.IncludeXmlComments(outDir + "Hl7.Fhir.R4.Core.xml", true);
+        c.IncludeXmlComments(outDir + "Hl7.Fhir.R4.xml", true);
         c.IncludeXmlComments(outDir + "ORSCF.SubjectData.Contract.xml", true);
         c.IncludeXmlComments(outDir + "ORSCF.SubjectData.Service.xml", true);
         c.IncludeXmlComments(outDir + "ORSCF.SubjectData.Service.WebAPI.xml", true);
@@ -156,16 +164,16 @@ namespace MedicalResearch.SubjectData.WebAPI {
         app.UseDeveloperExceptionPage();
       }
 
-      string validateTokensVia = _Configuration.GetValue<string>("ValidateTokensVia");
-      if (validateTokensVia.StartsWith("http")) {
-        DefaultAccessTokenValidator.Instance = new ValidationServiceConnector(
-          validateTokensVia,
-          _Configuration.GetValue<string>("ValidationServiceConnectorToken")
-        ).AccessTokenValidator;
-      }
-      else {
-        DefaultAccessTokenValidator.Instance = new RulesetBasedAccessTokenValidator(validateTokensVia);
-      }
+      //string validateTokensVia = _Configuration.GetValue<string>("ValidateTokensVia");
+      //if (validateTokensVia.StartsWith("http")) {
+      //  DefaultAccessTokenValidator.Instance = new ValidationServiceConnector(
+      //    validateTokensVia,
+      //    _Configuration.GetValue<string>("ValidationServiceConnectorToken")
+      //  ).AccessTokenValidator;
+      //}
+      //else {
+      //  DefaultAccessTokenValidator.Instance = new RulesetBasedAccessTokenValidator(validateTokensVia);
+      //}
 
       if (_Configuration.GetValue<bool>("EnableSwaggerUi")) {
         var baseUrl = _Configuration.GetValue<string>("BaseUrl");

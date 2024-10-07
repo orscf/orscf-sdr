@@ -23,11 +23,11 @@ using Microsoft.EntityFrameworkCore;
 
        //CONFIGURATION:
 
-       const string inputFile               = "..\\..\\..\\..\\..\\orscf-modeling\\EDMX\\SubjectData\\ORSCF-SubjectData.Schema.json";
+       const string inputFile               = "..\\..\\EDMX\\ORSCF-SubjectData.Schema.json";
 
        const string outputNamespace         = "MedicalResearch.SubjectData.Persistence.EF";
        const string entityClassNamePattern  = "{E}Entity";
-       const string tablePrefix             = "Sms";
+       const string tablePrefix             = "Sdr";
        const string contextName             = "SubjectDataDbContext";
        const string defaultConnectionString = "Server=(localdb)\\MsSqlLocalDb;Database={CN};Integrated Security=True;Persist Security Info=True;MultipleActiveResultSets=True;";
        const bool generateEfMapping         = true;

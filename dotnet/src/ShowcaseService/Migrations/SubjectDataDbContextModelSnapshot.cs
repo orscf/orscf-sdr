@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace MedicalResearch.SubjectData.Migrations
 {
     [DbContext(typeof(SubjectDataDbContext))]
@@ -15,9 +17,13 @@ namespace MedicalResearch.SubjectData.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityColumns()
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.2");
+                .HasAnnotation("ProductVersion", "7.0.20")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("MedicalResearch.SubjectData.Persistence.SubjectEntity", b =>
                 {
@@ -25,34 +31,52 @@ namespace MedicalResearch.SubjectData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ActualSiteIdentifier")
+                    b.Property<string>("ActualArm")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ActualSiteUid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("EnrollingSiteIdentifier")
+                    b.Property<string>("AssignedArm")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EnrollingSiteUid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("EnrollmentDate")
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("ModificationTimestampUtc")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("PeriodEnd")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("ResearchStudyUid")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime?>("PeriodStart")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StatusNote")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("StudyUid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("SubjectIdentifier")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TerminatedReason")
+                    b.Property<string>("SubstudyNames")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("TerminationDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("SubjectUid");
 
-                    b.ToTable("SmsSubjects");
+                    b.ToTable("SdrSubjects", (string)null);
                 });
 
             modelBuilder.Entity("MedicalResearch.SubjectData.Persistence.SubjectSiteAssignmentEntity", b =>
@@ -64,7 +88,7 @@ namespace MedicalResearch.SubjectData.Migrations
                     b.Property<Guid?>("ByInvolvedPersonUid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("SiteRelatedPatientIdentifier")
+                    b.Property<string>("SiteDefinedPatientIdentifier")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SiteUid")
@@ -80,7 +104,7 @@ namespace MedicalResearch.SubjectData.Migrations
 
                     b.HasIndex("SubjectUid");
 
-                    b.ToTable("SmsSubjectSiteAssignments");
+                    b.ToTable("SdrSubjectSiteAssignments", (string)null);
                 });
 
             modelBuilder.Entity("MedicalResearch.SubjectData.Persistence.SubjectSiteAssignmentEntity", b =>

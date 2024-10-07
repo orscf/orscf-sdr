@@ -24,7 +24,7 @@ namespace MedicalResearch.SubjectData.Persistence.EF {
       //////////////////////////////////////////////////////////////////////////////////////
 
       var cfgSubject = modelBuilder.Entity<SubjectEntity>();
-      cfgSubject.ToTable("SmsSubjects");
+      cfgSubject.ToTable("SdrSubjects");
       cfgSubject.HasKey((e) => e.SubjectUid);
 
       //////////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ namespace MedicalResearch.SubjectData.Persistence.EF {
       //////////////////////////////////////////////////////////////////////////////////////
 
       var cfgSubjectSiteAssignment = modelBuilder.Entity<SubjectSiteAssignmentEntity>();
-      cfgSubjectSiteAssignment.ToTable("SmsSubjectSiteAssignments");
+      cfgSubjectSiteAssignment.ToTable("SdrSubjectSiteAssignments");
       cfgSubjectSiteAssignment.HasKey((e) => e.SubjectSiteAssignmentUid);
 
       // LOOKUP: >>> Subject
