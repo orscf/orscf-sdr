@@ -3,6 +3,7 @@ using System;
 using System.Data.Fuse;
 using System.Data.Fuse.Convenience;
 using System.Data.Fuse.Ef;
+using System.Data.Fuse.Ef.InstanceManagement;
 
 namespace MedicalResearch.SubjectData.StoreAccess {
 
@@ -11,7 +12,12 @@ namespace MedicalResearch.SubjectData.StoreAccess {
 
     private static EfRepository<MedicalResearch.SubjectData.Persistence.SubjectEntity, Guid> CreateInnerEfRepo() {
       var context = new MedicalResearch.SubjectData.Persistence.EF.SubjectDataDbContext();
-      return new EfRepository<MedicalResearch.SubjectData.Persistence.SubjectEntity, Guid>(context);
+      IDbContextInstanceProvider dbContextInstanceProvider = new ShortLivingDbContextInstanceProvider<
+        MedicalResearch.SubjectData.Persistence.EF.SubjectDataDbContext
+      >();
+      return new EfRepository<
+        MedicalResearch.SubjectData.Persistence.SubjectEntity, Guid
+      >(dbContextInstanceProvider);
     }
 
     public SubjectStore() : base(
