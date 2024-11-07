@@ -31,7 +31,7 @@ namespace MedicalResearch.SubjectData {
     /// <returns></returns>
     Guid SubscribeForChangedSubjects(
       string subscriberUrl,
-      SubjectFilter filter = null
+      System.Data.Fuse.ExpressionTree filter = null
     );
 
     /// <summary>
@@ -61,9 +61,9 @@ namespace MedicalResearch.SubjectData {
       string eventSignature,
       Guid subscriptionUid,
       string publisherUrl,
-      SubjectMetaRecord[] createdRecords,
-      SubjectMetaRecord[] modifiedRecords,
-      SubjectMetaRecord[] archivedRecords,
+      System.Data.Fuse.EntityRef[] createdRecords,
+      System.Data.Fuse.EntityRef[] modifiedRecords,
+      System.Data.Fuse.EntityRef[] archivedRecords,
       out bool terminateSubscription
     );
 

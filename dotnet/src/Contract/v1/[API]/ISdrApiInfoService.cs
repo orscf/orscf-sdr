@@ -4,10 +4,10 @@ namespace MedicalResearch.SubjectData {
 
   public static class SdrCapabilities {
 
+    public const string SdrStoreAccess = "SdrStoreAccess";
+
     public const string SdrEventSubscription = "SdrEventSubscription";
 
-    public const string SubjectConsume = "SubjectConsume";
-    public const string SubjectSubmission = "SubjectSubmission";
     public const string SubjectHL7Export = "SubjectHL7Export";
     public const string SubjectHL7Import = "SubjectHL7Import";
 
@@ -25,9 +25,8 @@ namespace MedicalResearch.SubjectData {
     /// <summary>
     /// returns a list of API-features (there are several 'services' for different use cases, described by ORSCF)
     /// supported by this implementation. The following values are possible:
+    /// 'SdrStoreAccess',
     /// 'SdrEventSubscription',
-    /// 'SubjectConsume',
-    /// 'SubjectSubmission',
     /// 'SubjectHL7Export'
     /// 'SubjectHL7Import'
     /// </summary>

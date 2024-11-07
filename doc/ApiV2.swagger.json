@@ -1,0 +1,5145 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ORSCF SubjectData-API",
+    "description": "NOTE: This is not intended be a 'RESTful' api, as it is NOT located on the persistence layer and is therefore NOT focused on doing CRUD operations! This HTTP-based API uses a 'call-based' approach to known BL operations. IN-, OUT- and return-arguments are transmitted using request-/response- wrappers (see [UJMW](https://github.com/KornSW/UnifiedJsonMessageWrapper)), which are very lightweight and are a compromise for broad support and adaptability in REST-inspired technologies as well as soap-inspired technologies!",
+    "contact": {
+      "name": "Open Research Study Communication Format",
+      "url": "https://orscf.org",
+      "email": "info@orscf.org"
+    },
+    "version": "2.0.0"
+  },
+  "paths": {
+    "/sdr/v2/SdrApiInfo/GetApiVersion": {
+      "post": {
+        "tags": [
+          "SdrApiInfoService"
+        ],
+        "summary": "returns the version of the ORSCF specification which is implemented by this API, (this can be used for backward compa...",
+        "description": "returns the version of the ORSCF specification which is implemented by this API,\r\n(this can be used for backward compatibility within inhomogeneous infrastructures)\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SdrApiInfoServiceGetApiVersionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetApiVersionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetApiVersionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetApiVersionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/SdrApiInfo/GetCapabilities": {
+      "post": {
+        "tags": [
+          "SdrApiInfoService"
+        ],
+        "summary": "returns a list of API-features (there are several 'services' for different use cases, described by ORSCF) supported b...",
+        "description": "returns a list of API-features (there are several 'services' for different use cases, described by ORSCF)\r\nsupported by this implementation. The following values are possible:\r\n'SdrStoreAccess',\r\n'SdrEventSubscription',\r\n'SubjectHL7Export'\r\n'SubjectHL7Import'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SdrApiInfoServiceGetCapabilitiesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetCapabilitiesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetCapabilitiesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetCapabilitiesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/SdrApiInfo/GetPermittedAuthScopes": {
+      "post": {
+        "tags": [
+          "SdrApiInfoService"
+        ],
+        "summary": "returns a list of available capabilities (\"API:SubjectOverview\") and/or data-scopes (\"Study:9B2C3F48-2941-2F8F-4D35-7...",
+        "description": "returns a list of available capabilities (\"API:SubjectOverview\") and/or\r\ndata-scopes (\"Study:9B2C3F48-2941-2F8F-4D35-7D117D5C6F72\")\r\nwhich are permitted for the CURRENT ACCESSOR and gives information about its 'authState', which can be:\r\n0=auth needed /\r\n1=authenticated /\r\n-1=auth expired /\r\n-2=auth invalid/disabled\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SdrApiInfoServiceGetPermittedAuthScopesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **authState**: ...\r\n",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetPermittedAuthScopesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetPermittedAuthScopesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetPermittedAuthScopesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/SdrApiInfo/GetOAuthTokenRequestUrl": {
+      "post": {
+        "tags": [
+          "SdrApiInfoService"
+        ],
+        "summary": "OPTIONAL: If the authentication on the current service is mapped using tokens and should provide information about th...",
+        "description": "OPTIONAL: If the authentication on the current service is mapped\r\nusing tokens and should provide information about the source at this point,\r\nthe login URL to be called up via browser (OAuth <see href=\"https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html\">'CIBA-Flow'</see>) is returned here.\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SdrApiInfoServiceGetOAuthTokenRequestUrlRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetOAuthTokenRequestUrlResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetOAuthTokenRequestUrlResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdrApiInfoServiceGetOAuthTokenRequestUrlResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/GetOriginIdentity": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "Returns an string, representing the \"Identity\" of the current origin. This can be used to discriminate multiple sourc...",
+        "description": "Returns an string, representing the \"Identity\" of the current origin.\r\nThis can be used to discriminate multiple source repos.\r\n(usually it should be related to a SCOPE like {DbServer}+{DbName/Schema}+{EntityName})\r\nNOTE: This is an technical disciminator and it is not required, that it is an human-readable\r\n\"frieldly-name\". It can just be an Hash or Uid, so its NOT RECOMMENDED to use it as display label!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetOriginIdentityRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetOriginIdentityResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetOriginIdentityResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetOriginIdentityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/GetCapabilities": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "Returns an property bag which holds information about the implemented/supported capabilities of this IRepository.",
+        "description": "Returns an property bag which holds information about the implemented/supported capabilities of this IRepository.\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetCapabilitiesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetCapabilitiesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetCapabilitiesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetCapabilitiesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/GetEntityRefs": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'GetEntityRefs'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **filter**: ...\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/GetEntityRefsBySearchExpression": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this reposit...",
+        "description": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **searchExpression**: ...\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsBySearchExpressionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsBySearchExpressionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsBySearchExpressionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsBySearchExpressionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/GetEntityRefsByKey": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'GetEntityRefsByKey'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **keysToLoad**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsByKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsByKeyResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsByKeyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityRefsByKeyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/GetEntities": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'GetEntities'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **filter**: ...\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/GetEntitiesBySearchExpression": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this reposit...",
+        "description": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **searchExpression**: ...\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesBySearchExpressionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesBySearchExpressionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesBySearchExpressionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesBySearchExpressionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/GetEntitiesByKey": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'GetEntitiesByKey'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **keysToLoad**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesByKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesByKeyResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesByKeyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntitiesByKeyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/GetEntityFields": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'GetEntityFields'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **filter**: ...\r\n\n\nParam **includedFieldNames**: An array of field names to be loaded\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/GetEntityFieldsBySearchExpression": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this reposit...",
+        "description": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **searchExpression**: ...\r\n\n\nParam **includedFieldNames**: An array of field names to be loaded\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsBySearchExpressionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsBySearchExpressionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsBySearchExpressionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsBySearchExpressionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/GetEntityFieldsByKey": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'GetEntityFieldsByKey'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **keysToLoad**: ...\r\n\n\nParam **includedFieldNames**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsByKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsByKeyResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsByKeyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreGetEntityFieldsByKeyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/CountAll": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'CountAll'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountAllRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountAllResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountAllResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountAllResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/Count": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'Count'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **filter**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/CountBySearchExpression": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this reposit...",
+        "description": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **searchExpression**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountBySearchExpressionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountBySearchExpressionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountBySearchExpressionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreCountBySearchExpressionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/ContainsKey": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'ContainsKey'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **key**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreContainsKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreContainsKeyResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreContainsKeyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreContainsKeyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/AddOrUpdateEntityFields": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "Creates an new Entity or Updates the given set of fields for an entity and returns all fields that ARE DIFFERENT from...",
+        "description": "Creates an new Entity or Updates the given set of fields for an entity and\r\nreturns all fields that ARE DIFFERENT from the given values or null, if the entity wasn't found.\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **fields**: NOTE: The target entity to be updated will be addressed by the key values used from this param, so if the given dictionary contains key fields which are addressing an exisiting record, then it will be updated. (CASE): If the given dictionary contains NO key fields, then the result is depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability): If external keys are required, this method will skip crating a record and return null, otherwise it will create a new record (with an new key) and return it. (CASE): If the given dictionary contains key fields, which are addressing an NOT exisiting entity then the result is again depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability): If external keys are required, this method will crate a record (using the given key) and return it, otherwise it will skip create a new record (with an new key) and return it. (CASE): If the given dictionary contains key fields, which are addressing an NOT exisiting entity then it will add it and return it again. Depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability) it will either use the given key oder create a assign a new key that will be present within the returned fields). For that reason it is IMPORTANT, that the call needs to evaluate the returned key!\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreAddOrUpdateEntityFieldsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreAddOrUpdateEntityFieldsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreAddOrUpdateEntityFieldsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreAddOrUpdateEntityFieldsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/AddOrUpdateEntity": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'AddOrUpdateEntity'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **entity**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreAddOrUpdateEntityRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreAddOrUpdateEntityResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreAddOrUpdateEntityResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreAddOrUpdateEntityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/TryUpdateEntityFields": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "Updates the given set of fields for an entity and returns all fields that ARE DIFFERENT from the given values or null...",
+        "description": "Updates the given set of fields for an entity and\r\nreturns all fields that ARE DIFFERENT from the given values or null, if the entity wasn't found.\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **fields**: NOTE: The target entity to be updated will be addressed by the key values used from this param! If the given dictionary does not contain the key fiels, an exception will be thrown!\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateEntityFieldsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateEntityFieldsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateEntityFieldsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateEntityFieldsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/TryUpdateEntity": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'TryUpdateEntity'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **entity**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateEntityRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateEntityResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateEntityResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateEntityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/TryAddEntity": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'TryAddEntity'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **entity**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryAddEntityRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryAddEntityResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryAddEntityResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryAddEntityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/MassupdateByKeys": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'MassupdateByKeys'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **keysToUpdate**: ...\r\n\n\nParam **fields**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateByKeysRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateByKeysResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateByKeysResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateByKeysResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/Massupdate": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "Updates a dedicated subset of fields for all addressed entites and returns an array containing the keys of affeced en...",
+        "description": "Updates a dedicated subset of fields for all addressed entites and\r\nreturns an array containing the keys of affeced entities.\r\nNOTE: this method can only be used, if the 'SupportsMassupdate'-Capability is given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **filter**: A filter to adress that entities, which sould be updated.\r\n\n\nParam **fields**: A set of fields and value, that should be update. It MUST NOT contain fields which are part of the Key, otherwise an exception will be thrown!\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/MassupdateBySearchExpression": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "Updates a dedicated subset of fields for all addressed entites and returns an array containing the keys of affeced en...",
+        "description": "Updates a dedicated subset of fields for all addressed entites and\r\nreturns an array containing the keys of affeced entities.\r\nNOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability and the\r\n'SupportsMassupdate'-Capability are given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **searchExpression**: A search expression to adress that entities, which sould be updated.\r\n\n\nParam **fields**: A set of fields and value, that should be update. It MUST NOT contain fields which are part of the Key, otherwise an exception will be thrown!\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateBySearchExpressionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateBySearchExpressionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateBySearchExpressionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreMassupdateBySearchExpressionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/TryDeleteEntities": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'TryDeleteEntities'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **keysToDelete**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryDeleteEntitiesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryDeleteEntitiesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryDeleteEntitiesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryDeleteEntitiesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/SubjectSiteAssignment/TryUpdateKey": {
+      "post": {
+        "tags": [
+          "SubjectSiteAssignmentStore"
+        ],
+        "summary": "",
+        "description": "'TryUpdateKey'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **currentKey**: ...\r\n\n\nParam **newKey**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateKeyResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateKeyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectSiteAssignmentStoreTryUpdateKeyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/GetOriginIdentity": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "Returns an string, representing the \"Identity\" of the current origin. This can be used to discriminate multiple sourc...",
+        "description": "Returns an string, representing the \"Identity\" of the current origin.\r\nThis can be used to discriminate multiple source repos.\r\n(usually it should be related to a SCOPE like {DbServer}+{DbName/Schema}+{EntityName})\r\nNOTE: This is an technical disciminator and it is not required, that it is an human-readable\r\n\"frieldly-name\". It can just be an Hash or Uid, so its NOT RECOMMENDED to use it as display label!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreGetOriginIdentityRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetOriginIdentityResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetOriginIdentityResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetOriginIdentityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/GetCapabilities": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "Returns an property bag which holds information about the implemented/supported capabilities of this IRepository.",
+        "description": "Returns an property bag which holds information about the implemented/supported capabilities of this IRepository.\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreGetCapabilitiesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetCapabilitiesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetCapabilitiesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetCapabilitiesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/GetEntityRefs": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'GetEntityRefs'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **filter**: ...\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreGetEntityRefsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityRefsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityRefsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityRefsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/GetEntityRefsBySearchExpression": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this reposit...",
+        "description": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **searchExpression**: ...\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreGetEntityRefsBySearchExpressionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityRefsBySearchExpressionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityRefsBySearchExpressionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityRefsBySearchExpressionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/GetEntityRefsByKey": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'GetEntityRefsByKey'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **keysToLoad**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreGetEntityRefsByKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityRefsByKeyResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityRefsByKeyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityRefsByKeyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/GetEntities": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'GetEntities'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **filter**: ...\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreGetEntitiesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntitiesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntitiesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntitiesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/GetEntitiesBySearchExpression": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this reposit...",
+        "description": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **searchExpression**: ...\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreGetEntitiesBySearchExpressionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntitiesBySearchExpressionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntitiesBySearchExpressionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntitiesBySearchExpressionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/GetEntitiesByKey": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'GetEntitiesByKey'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **keysToLoad**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreGetEntitiesByKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntitiesByKeyResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntitiesByKeyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntitiesByKeyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/GetEntityFields": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'GetEntityFields'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **filter**: ...\r\n\n\nParam **includedFieldNames**: An array of field names to be loaded\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/GetEntityFieldsBySearchExpression": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this reposit...",
+        "description": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **searchExpression**: ...\r\n\n\nParam **includedFieldNames**: An array of field names to be loaded\r\n\n\nParam **sortedBy**: An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']\r\n\n\nParam **limit**: ...\r\n\n\nParam **skip**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsBySearchExpressionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsBySearchExpressionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsBySearchExpressionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsBySearchExpressionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/GetEntityFieldsByKey": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'GetEntityFieldsByKey'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **keysToLoad**: ...\r\n\n\nParam **includedFieldNames**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsByKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsByKeyResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsByKeyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreGetEntityFieldsByKeyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/CountAll": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'CountAll'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreCountAllRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreCountAllResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreCountAllResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreCountAllResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/Count": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'Count'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **filter**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreCountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreCountResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreCountResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreCountResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/CountBySearchExpression": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this reposit...",
+        "description": "NOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability is given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **searchExpression**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreCountBySearchExpressionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreCountBySearchExpressionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreCountBySearchExpressionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreCountBySearchExpressionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/ContainsKey": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'ContainsKey'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **key**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreContainsKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreContainsKeyResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreContainsKeyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreContainsKeyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/AddOrUpdateEntityFields": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "Creates an new Entity or Updates the given set of fields for an entity and returns all fields that ARE DIFFERENT from...",
+        "description": "Creates an new Entity or Updates the given set of fields for an entity and\r\nreturns all fields that ARE DIFFERENT from the given values or null, if the entity wasn't found.\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **fields**: NOTE: The target entity to be updated will be addressed by the key values used from this param, so if the given dictionary contains key fields which are addressing an exisiting record, then it will be updated. (CASE): If the given dictionary contains NO key fields, then the result is depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability): If external keys are required, this method will skip crating a record and return null, otherwise it will create a new record (with an new key) and return it. (CASE): If the given dictionary contains key fields, which are addressing an NOT exisiting entity then the result is again depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability): If external keys are required, this method will crate a record (using the given key) and return it, otherwise it will skip create a new record (with an new key) and return it. (CASE): If the given dictionary contains key fields, which are addressing an NOT exisiting entity then it will add it and return it again. Depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability) it will either use the given key oder create a assign a new key that will be present within the returned fields). For that reason it is IMPORTANT, that the call needs to evaluate the returned key!\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreAddOrUpdateEntityFieldsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreAddOrUpdateEntityFieldsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreAddOrUpdateEntityFieldsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreAddOrUpdateEntityFieldsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/AddOrUpdateEntity": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'AddOrUpdateEntity'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **entity**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreAddOrUpdateEntityRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreAddOrUpdateEntityResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreAddOrUpdateEntityResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreAddOrUpdateEntityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/TryUpdateEntityFields": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "Updates the given set of fields for an entity and returns all fields that ARE DIFFERENT from the given values or null...",
+        "description": "Updates the given set of fields for an entity and\r\nreturns all fields that ARE DIFFERENT from the given values or null, if the entity wasn't found.\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **fields**: NOTE: The target entity to be updated will be addressed by the key values used from this param! If the given dictionary does not contain the key fiels, an exception will be thrown!\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreTryUpdateEntityFieldsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryUpdateEntityFieldsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryUpdateEntityFieldsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryUpdateEntityFieldsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/TryUpdateEntity": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'TryUpdateEntity'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **entity**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreTryUpdateEntityRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryUpdateEntityResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryUpdateEntityResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryUpdateEntityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/TryAddEntity": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'TryAddEntity'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **entity**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreTryAddEntityRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryAddEntityResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryAddEntityResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryAddEntityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/MassupdateByKeys": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'MassupdateByKeys'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **keysToUpdate**: ...\r\n\n\nParam **fields**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreMassupdateByKeysRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreMassupdateByKeysResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreMassupdateByKeysResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreMassupdateByKeysResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/Massupdate": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "Updates a dedicated subset of fields for all addressed entites and returns an array containing the keys of affeced en...",
+        "description": "Updates a dedicated subset of fields for all addressed entites and\r\nreturns an array containing the keys of affeced entities.\r\nNOTE: this method can only be used, if the 'SupportsMassupdate'-Capability is given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **filter**: A filter to adress that entities, which sould be updated.\r\n\n\nParam **fields**: A set of fields and value, that should be update. It MUST NOT contain fields which are part of the Key, otherwise an exception will be thrown!\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreMassupdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreMassupdateResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreMassupdateResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreMassupdateResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/MassupdateBySearchExpression": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "Updates a dedicated subset of fields for all addressed entites and returns an array containing the keys of affeced en...",
+        "description": "Updates a dedicated subset of fields for all addressed entites and\r\nreturns an array containing the keys of affeced entities.\r\nNOTE: this method can only be used, if the 'SupportsStringBaseSearchExpressions'-Capability and the\r\n'SupportsMassupdate'-Capability are given for this repository!\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **searchExpression**: A search expression to adress that entities, which sould be updated.\r\n\n\nParam **fields**: A set of fields and value, that should be update. It MUST NOT contain fields which are part of the Key, otherwise an exception will be thrown!\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreMassupdateBySearchExpressionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreMassupdateBySearchExpressionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreMassupdateBySearchExpressionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreMassupdateBySearchExpressionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/TryDeleteEntities": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'TryDeleteEntities'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **keysToDelete**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreTryDeleteEntitiesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryDeleteEntitiesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryDeleteEntitiesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryDeleteEntitiesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdr/v2/store/Subject/TryUpdateKey": {
+      "post": {
+        "tags": [
+          "SubjectStore"
+        ],
+        "summary": "",
+        "description": "'TryUpdateKey'\r\n",
+        "requestBody": {
+          "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)\n\nParam **currentKey**: ...\r\n\n\nParam **newKey**: ...\r\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectStoreTryUpdateKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An Unified Json Message Wrapper, which contains the following fields:\n\nParam **'_'**: used to flow additional ambient data (see UJMW standard)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryUpdateKeyResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryUpdateKeyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectStoreTryUpdateKeyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SdrApiInfoServiceGetApiVersionRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SdrApiInfoServiceGetApiVersionResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "string",
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SdrApiInfoServiceGetCapabilitiesRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SdrApiInfoServiceGetCapabilitiesResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SdrApiInfoServiceGetPermittedAuthScopesRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SdrApiInfoServiceGetPermittedAuthScopesResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "authState": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SdrApiInfoServiceGetOAuthTokenRequestUrlRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SdrApiInfoServiceGetOAuthTokenRequestUrlResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "string",
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetOriginIdentityRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetOriginIdentityResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "string",
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetCapabilitiesRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "RepositoryCapabilities": {
+        "type": "object",
+        "properties": {
+          "canReadContent": {
+            "type": "boolean"
+          },
+          "canUpdateContent": {
+            "type": "boolean"
+          },
+          "canAddNewEntities": {
+            "type": "boolean"
+          },
+          "canDeleteEntities": {
+            "type": "boolean"
+          },
+          "supportsMassupdate": {
+            "type": "boolean"
+          },
+          "supportsKeyUpdate": {
+            "type": "boolean"
+          },
+          "supportsStringBasedSearchExpressions": {
+            "type": "boolean"
+          },
+          "requiresExternalKeys": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubjectSiteAssignmentStoreGetCapabilitiesResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "$ref": "#/components/schemas/RepositoryCapabilities"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "FieldPredicate": {
+        "type": "object",
+        "properties": {
+          "fieldName": {
+            "type": "string",
+            "nullable": true
+          },
+          "operator": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExpressionTree": {
+        "type": "object",
+        "properties": {
+          "matchAll": {
+            "type": "boolean"
+          },
+          "negate": {
+            "type": "boolean"
+          },
+          "predicates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldPredicate"
+            },
+            "nullable": true
+          },
+          "subTree": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExpressionTree"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubjectSiteAssignmentStoreGetEntityRefsRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ExpressionTree"
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "GuidEntityRef": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubjectSiteAssignmentStoreGetEntityRefsResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuidEntityRef"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntityRefsBySearchExpressionRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "searchExpression": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntityRefsBySearchExpressionResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuidEntityRef"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntityRefsByKeyRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "keysToLoad": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntityRefsByKeyResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuidEntityRef"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntitiesRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ExpressionTree"
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignment": {
+        "required": [
+          "siteUid",
+          "subjectSiteAssignmentUid",
+          "subjectUid",
+          "validFrom"
+        ],
+        "type": "object",
+        "properties": {
+          "subjectSiteAssignmentUid": {
+            "type": "string",
+            "description": "An <see href=\"https://de.wikipedia.org/wiki/Universally_Unique_Identifier\">Universally Unique Identifier</see> which can be generated by any origin system and is used to address this ORSCF conform data record in decentralized environments. Note that this Identity must not be changed any more!",
+            "format": "uuid"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "siteUid": {
+            "type": "string",
+            "description": "<see href=\"https://de.wikipedia.org/wiki/Universally_Unique_Identifier\">Universally Unique Identifier</see> of the target Site",
+            "format": "uuid"
+          },
+          "subjectUid": {
+            "type": "string",
+            "description": "<see href=\"https://de.wikipedia.org/wiki/Universally_Unique_Identifier\">Universally Unique Identifier</see> of the target Subject",
+            "format": "uuid"
+          },
+          "siteDefinedPatientIdentifier": {
+            "type": "string",
+            "description": "This can be the ID ('surrogate-key') of the Partient record within a site specific patient management system. This MUST NOT be any natural key or plain readable name which exposes the identity of the patient! *this field is optional (use null as value)",
+            "nullable": true
+          },
+          "byInvolvedPersonUid": {
+            "type": "string",
+            "description": "*this field is optional",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubjectSiteAssignmentStoreGetEntitiesResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectSiteAssignment"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntitiesBySearchExpressionRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "searchExpression": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntitiesBySearchExpressionResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectSiteAssignment"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntitiesByKeyRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "keysToLoad": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntitiesByKeyResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectSiteAssignment"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntityFieldsRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ExpressionTree"
+          },
+          "includedFieldNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be loaded",
+            "nullable": true
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntityFieldsResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": { }
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntityFieldsBySearchExpressionRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "searchExpression": {
+            "type": "string",
+            "nullable": true
+          },
+          "includedFieldNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be loaded",
+            "nullable": true
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntityFieldsBySearchExpressionResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": { }
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntityFieldsByKeyRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "keysToLoad": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "includedFieldNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreGetEntityFieldsByKeyResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": { }
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreCountAllRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreCountAllResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreCountRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ExpressionTree"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreCountResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreCountBySearchExpressionRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "searchExpression": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreCountBySearchExpressionResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreContainsKeyRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreContainsKeyResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "boolean"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreAddOrUpdateEntityFieldsRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": { },
+            "description": "NOTE: The target entity to be updated will be addressed by the key values used from this param, so if the given dictionary contains key fields which are addressing an exisiting record, then it will be updated. (CASE): If the given dictionary contains NO key fields, then the result is depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability): If external keys are required, this method will skip crating a record and return null, otherwise it will create a new record (with an new key) and return it. (CASE): If the given dictionary contains key fields, which are addressing an NOT exisiting entity then the result is again depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability): If external keys are required, this method will crate a record (using the given key) and return it, otherwise it will skip create a new record (with an new key) and return it. (CASE): If the given dictionary contains key fields, which are addressing an NOT exisiting entity then it will add it and return it again. Depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability) it will either use the given key oder create a assign a new key that will be present within the returned fields). For that reason it is IMPORTANT, that the call needs to evaluate the returned key!",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreAddOrUpdateEntityFieldsResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreAddOrUpdateEntityRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "entity": {
+            "$ref": "#/components/schemas/SubjectSiteAssignment"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreAddOrUpdateEntityResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "$ref": "#/components/schemas/SubjectSiteAssignment"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreTryUpdateEntityFieldsRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": { },
+            "description": "NOTE: The target entity to be updated will be addressed by the key values used from this param! If the given dictionary does not contain the key fiels, an exception will be thrown!",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreTryUpdateEntityFieldsResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreTryUpdateEntityRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "entity": {
+            "$ref": "#/components/schemas/SubjectSiteAssignment"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreTryUpdateEntityResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "$ref": "#/components/schemas/SubjectSiteAssignment"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreTryAddEntityRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "entity": {
+            "$ref": "#/components/schemas/SubjectSiteAssignment"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreTryAddEntityResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreMassupdateByKeysRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "keysToUpdate": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreMassupdateByKeysResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreMassupdateRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ExpressionTree"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": { },
+            "description": "A set of fields and value, that should be update. It MUST NOT contain fields which are part of the Key, otherwise an exception will be thrown!",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreMassupdateResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreMassupdateBySearchExpressionRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "searchExpression": {
+            "type": "string",
+            "description": "A search expression to adress that entities, which sould be updated.",
+            "nullable": true
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": { },
+            "description": "A set of fields and value, that should be update. It MUST NOT contain fields which are part of the Key, otherwise an exception will be thrown!",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreMassupdateBySearchExpressionResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreTryDeleteEntitiesRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "keysToDelete": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreTryDeleteEntitiesResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreTryUpdateKeyRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "currentKey": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "newKey": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectSiteAssignmentStoreTryUpdateKeyResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "boolean"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetOriginIdentityRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetOriginIdentityResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "string",
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetCapabilitiesRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetCapabilitiesResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "$ref": "#/components/schemas/RepositoryCapabilities"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityRefsRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ExpressionTree"
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityRefsResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuidEntityRef"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityRefsBySearchExpressionRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "searchExpression": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityRefsBySearchExpressionResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuidEntityRef"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityRefsByKeyRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "keysToLoad": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityRefsByKeyResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuidEntityRef"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntitiesRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ExpressionTree"
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "Subject": {
+        "required": [
+          "actualArm",
+          "actualSiteUid",
+          "assignedArm",
+          "enrollingSiteUid",
+          "isArchived",
+          "modificationTimestampUtc",
+          "status",
+          "studyUid",
+          "subjectUid",
+          "substudyNames"
+        ],
+        "type": "object",
+        "properties": {
+          "subjectUid": {
+            "type": "string",
+            "description": "An <see href=\"https://de.wikipedia.org/wiki/Universally_Unique_Identifier\">Universally Unique Identifier</see> which can be generated by any origin system and is used to address this ORSCF conform data record in decentralized environments. Note that this Identity must not be changed any more!",
+            "format": "uuid"
+          },
+          "actualSiteUid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "enrollingSiteUid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "periodStart": {
+            "type": "string",
+            "description": "*this field is optional",
+            "format": "date-time",
+            "nullable": true
+          },
+          "periodEnd": {
+            "type": "string",
+            "description": "*this field is optional",
+            "format": "date-time",
+            "nullable": true
+          },
+          "statusNote": {
+            "type": "string",
+            "description": "*this field is optional (use null as value)",
+            "nullable": true
+          },
+          "subjectIdentifier": {
+            "type": "string",
+            "description": "*this field is optional (use null as value)",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "description": "AS DECLARED BY <see href=\"https://www.hl7.org/fhir/valueset-research-subject-status.html\">HL7.ResearchSubjectStatus</see>:\r\n           candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn"
+          },
+          "studyUid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "modificationTimestampUtc": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isArchived": {
+            "type": "boolean"
+          },
+          "assignedArm": {
+            "type": "string"
+          },
+          "actualArm": {
+            "type": "string"
+          },
+          "substudyNames": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "description": "entity, which relates to <see href=\"https://www.hl7.org/fhir/researchsubject.html\">HL7.ResearchSubject</see>"
+      },
+      "SubjectStoreGetEntitiesResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subject"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntitiesBySearchExpressionRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "searchExpression": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntitiesBySearchExpressionResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subject"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntitiesByKeyRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "keysToLoad": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntitiesByKeyResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subject"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityFieldsRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ExpressionTree"
+          },
+          "includedFieldNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be loaded",
+            "nullable": true
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityFieldsResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": { }
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityFieldsBySearchExpressionRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "searchExpression": {
+            "type": "string",
+            "nullable": true
+          },
+          "includedFieldNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be loaded",
+            "nullable": true
+          },
+          "sortedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of field names to be used for sorting the results (before 'limit' and 'skip' is processed). Use the character \"^\" as prefix for DESC sorting. Sample: ['^Age','Lastname']",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skip": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityFieldsBySearchExpressionResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": { }
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityFieldsByKeyRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "keysToLoad": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "includedFieldNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreGetEntityFieldsByKeyResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": { }
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreCountAllRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreCountAllResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreCountRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ExpressionTree"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreCountResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreCountBySearchExpressionRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "searchExpression": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreCountBySearchExpressionResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreContainsKeyRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreContainsKeyResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "boolean"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreAddOrUpdateEntityFieldsRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": { },
+            "description": "NOTE: The target entity to be updated will be addressed by the key values used from this param, so if the given dictionary contains key fields which are addressing an exisiting record, then it will be updated. (CASE): If the given dictionary contains NO key fields, then the result is depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability): If external keys are required, this method will skip crating a record and return null, otherwise it will create a new record (with an new key) and return it. (CASE): If the given dictionary contains key fields, which are addressing an NOT exisiting entity then the result is again depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability): If external keys are required, this method will crate a record (using the given key) and return it, otherwise it will skip create a new record (with an new key) and return it. (CASE): If the given dictionary contains key fields, which are addressing an NOT exisiting entity then it will add it and return it again. Depending on the concrete repository implementation (see the 'RequiresExternalKeys'-Capability) it will either use the given key oder create a assign a new key that will be present within the returned fields). For that reason it is IMPORTANT, that the call needs to evaluate the returned key!",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreAddOrUpdateEntityFieldsResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreAddOrUpdateEntityRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "entity": {
+            "$ref": "#/components/schemas/Subject"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreAddOrUpdateEntityResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "$ref": "#/components/schemas/Subject"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreTryUpdateEntityFieldsRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": { },
+            "description": "NOTE: The target entity to be updated will be addressed by the key values used from this param! If the given dictionary does not contain the key fiels, an exception will be thrown!",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreTryUpdateEntityFieldsResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreTryUpdateEntityRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "entity": {
+            "$ref": "#/components/schemas/Subject"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreTryUpdateEntityResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "$ref": "#/components/schemas/Subject"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreTryAddEntityRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "entity": {
+            "$ref": "#/components/schemas/Subject"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreTryAddEntityResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreMassupdateByKeysRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "keysToUpdate": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreMassupdateByKeysResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreMassupdateRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ExpressionTree"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": { },
+            "description": "A set of fields and value, that should be update. It MUST NOT contain fields which are part of the Key, otherwise an exception will be thrown!",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreMassupdateResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreMassupdateBySearchExpressionRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "searchExpression": {
+            "type": "string",
+            "description": "A search expression to adress that entities, which sould be updated.",
+            "nullable": true
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": { },
+            "description": "A set of fields and value, that should be update. It MUST NOT contain fields which are part of the Key, otherwise an exception will be thrown!",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreMassupdateBySearchExpressionResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreTryDeleteEntitiesRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "keysToDelete": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreTryDeleteEntitiesResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreTryUpdateKeyRequest": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "currentKey": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "newKey": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      },
+      "SubjectStoreTryUpdateKeyResponse": {
+        "type": "object",
+        "properties": {
+          "_": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Used to flow additional ambient data (see UJMW standard)",
+            "nullable": true
+          },
+          "return": {
+            "type": "boolean"
+          },
+          "fault": {
+            "type": "string",
+            "description": "Optional field, which can be used to transport an error-message.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Unified Json Message Wrapper"
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme.",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
+}

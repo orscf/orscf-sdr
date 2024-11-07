@@ -10,6 +10,7 @@
     <Version>2.0.0</Version>
     <AssemblyName>ORSCF.SubjectData.Contract</AssemblyName>
     <RootNamespace>MedicalResearch.SubjectData</RootNamespace>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -34,7 +35,7 @@
 
   <ItemGroup>
     <PackageReference Include="FUSE-fx.EntityAnnotations" Version="4.0.3" />
-    <PackageReference Include="FUSE-fx.RepositoryContract" Version="0.4.5" />
+    <PackageReference Include="FUSE-fx.RepositoryContract" Version="0.4.7" />
     <PackageReference Include="Hl7.Fhir.R4" Version="5.5.1" />
   </ItemGroup>
 
@@ -47,14 +48,14 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RepoInterfaces.Generated.cs</LastGenOutput>
     </None>
-    <None Update="v1\SmsServices.md">
+    <None Update="ApiV2.md">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>SdrServices.tt</DependentUpon>
+      <DependentUpon>ApiV2.tt</DependentUpon>
     </None>
-    <None Update="v1\SdrServices.tt">
+    <None Update="ApiV2.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SmsServices.md</LastGenOutput>
+      <LastGenOutput>ApiV2.md</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -74,5 +75,16 @@
       <DependentUpon>RepoInterfaces.tt</DependentUpon>
     </Compile>
   </ItemGroup>
+  
+    <!-- https://stackoverflow.com/questions/57412190/how-to-include-xml-documentation-from-nuget-package-in-csproj-build-output -->
+      <Target Name="_ResolveCopyLocalNuGetPkgXmls" AfterTargets="ResolveReferences">
+        <ItemGroup><!-- Copy XML files from all PackageReferences to output dir -->
+          <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)'!='' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
+        </ItemGroup>
+      </Target>
 
+  <Target Name="CopyDocs"  AfterTargets="Build">
+    <Copy SourceFiles="$(ProjectDir)\ApiV2.md" DestinationFiles="$(ProjectDir)\..\..\..\doc\ApiV2.md" />
+  </Target> 
+  
 </Project>

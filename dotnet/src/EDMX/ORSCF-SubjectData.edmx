@@ -135,7 +135,7 @@ candidate | eligible | follow-up | ineligible | not-registered | off-study | on-
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="1e673f0774584ac2be5350aef5de4487" Name="Schema" ZoomLevel="96">
-        <EntityTypeShape EntityType="DomainModel.Subject" Width="2.375" PointX="3" PointY="2.25" FillColor="Aqua" />
+        <EntityTypeShape EntityType="DomainModel.Subject" Width="2.375" PointX="2.625" PointY="2.125" FillColor="Aqua" />
         <EntityTypeShape EntityType="DomainModel.SubjectSiteAssignment" Width="2.375" PointX="6" PointY="3.75" FillColor="Aqua" />
         <AssociationConnector Association="DomainModel.SubjectSubjectSiteAssignment" />
         </Diagram>

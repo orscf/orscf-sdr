@@ -21,11 +21,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(Solution Items)", "(Soluti
 		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBD4EFED-5F99-4450-AAFA-5F5CE235201E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F4529BF2-6E23-46A0-862D-FF979DE4C8E7}"
 	ProjectSection(SolutionItems) = preProject
 		(tools)\MDgen.Readme.txt = (tools)\MDgen.Readme.txt
 		(tools)\MDgen.Sample.tt = (tools)\MDgen.Sample.tt
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{03FA555E-85B6-481C-9FE6-709DFE523862}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

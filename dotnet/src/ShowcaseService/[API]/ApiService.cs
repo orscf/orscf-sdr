@@ -2,17 +2,18 @@
 using System.Security;
 using System.Data.AccessControl;
 using System.Linq;
+using MedicalResearch.SubjectData.StoreAccess;
 
 namespace MedicalResearch.SubjectData {
 
   public partial class ApiService : ISdrApiInfoService {
 
-    private static Version _Version = typeof(ISdrApiInfoService).Assembly.GetName().Version;
+    private static Version _Version = Version.Parse(ApiVersion.SemanticVersion);
     private string _OAuthTokenRequestUrl = "";
 
-    public ApiService(string oAuthTokenRequestUrl,string publicServiceUrl, string subscriptionStorageDirectory) {
+    public ApiService(string oAuthTokenRequestUrl, string publicServiceUrl, string subscriptionStorageDirectory) {
       _OAuthTokenRequestUrl = oAuthTokenRequestUrl;
-      _SubscriptionManager = new SubscriptionManager(publicServiceUrl, subscriptionStorageDirectory);
+      //_SubscriptionManager = new SubscriptionManager(publicServiceUrl, subscriptionStorageDirectory);
     }
 
     public string GetApiVersion() {
@@ -21,8 +22,7 @@ namespace MedicalResearch.SubjectData {
 
     public string[] GetCapabilities() {
       return new string[] {
-        SdrCapabilities.SubjectConsume,
-        SdrCapabilities.SubjectSubmission
+        SdrCapabilities.SdrStoreAccess
       };
     }
 

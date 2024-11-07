@@ -18,7 +18,7 @@
        '//CONFIGURATION:
 
        Const inputFile As String = "ORSCF-SubjectData.edmx"
-       Const schemaSemanticVersion = "0.1.0"
+       Const schemaSemanticVersion = "2.0.0"
     
        Dim versionDateUtc As DateTime = 
          DateTime.UtcNow.Date.Subtract(New TimeSpan(DateTime.UtcNow.DayOfWeek, 0, 0, 0))

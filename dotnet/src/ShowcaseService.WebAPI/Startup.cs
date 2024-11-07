@@ -38,7 +38,7 @@ namespace MedicalResearch.SubjectData.WebAPI {
 
       services.AddLogging();
 
-      _ApiVersion = typeof(ISdrApiInfoService).Assembly.GetName().Version;
+      _ApiVersion = Version.Parse(ApiVersion.SemanticVersion);
 
       //StudyManagementDbContext.Migrate();
 
@@ -47,30 +47,30 @@ namespace MedicalResearch.SubjectData.WebAPI {
       //services.AddSingleton<ISubjects, SubjectStore>();
       //services.AddSingleton<ISubjectSiteAssignments, SubjectSiteAssignmentStore>();
 
-
       var apiService = new ApiService(
         _Configuration.GetValue<string>("OAuthTokenRequestUrl"),
         _Configuration.GetValue<string>("PublicServiceUrl"),
         _Configuration.GetValue<string>("SubscriptionStorageDirectory")
       );
       services.AddSingleton<ISdrApiInfoService>(apiService);
-      services.AddSingleton<ISdrEventSubscriptionService>(apiService);
-
-      services.AddSingleton<ISubjectConsumeService>(apiService);
+      //services.AddSingleton<ISdrEventSubscriptionService>(apiService);
+      //services.AddSingleton<ISubjectConsumeService>(apiService);
       //services.AddSingleton<ISubjectSubmissionService>(apiService);
 
-      services.AddSingleton<ISubjectStore>(new SubjectStore());
-      services.AddSingleton<ISubjectSiteAssignmentStore>(new SubjectSiteAssignmentStore());
+      SdrShowcaseEndpointFactory.GetFactoryMethodsPerEndpoint((contractType, factory) => {
+        services.AddSingleton(contractType, (s) => factory());
+      });
 
       services.AddDynamicUjmwControllers(
-        (c) => {
+        (r) => {
 
-          c.AddControllerFor<ISubjectStore>("sdr/v2/store/Subjects");
-          c.AddControllerFor<ISubjectSiteAssignmentStore>("sdr/v2/store/SubjectSiteAssignments");
+          SdrEndpointRegister.GetContractsPerEndpoint((contractType, subroute) => {
+            r.AddControllerFor(contractType, "sdr/v2/" + subroute);
+          });
 
-          c.AddControllerFor<ISdrApiInfoService>("sdr/v2/SdrApiInfo");
-          c.AddControllerFor<ISdrEventSubscriptionService>("sdr/v2/SdrEventSubscription");
-          c.AddControllerFor<ISubjectConsumeService>("sdr/v2/SubjectConsume");
+          r.AddControllerFor<ISdrApiInfoService>("sdr/v2/SdrApiInfo");
+          //c.AddControllerFor<ISdrEventSubscriptionService>("sdr/v2/SdrEventSubscription");
+          //c.AddControllerFor<ISubjectConsumeService>("sdr/v2/SubjectConsume");
           //c.AddControllerFor<ISubjectSubmissionService>("sdr/v2/SubjectSubmission");
 
         }
@@ -132,7 +132,7 @@ namespace MedicalResearch.SubjectData.WebAPI {
         //);
 
         c.SwaggerDoc(
-          "ApiV1",
+          "ApiV" + _ApiVersion.ToString(1),
           new OpenApiInfo {
             Title = _ApiTitle + "-API",
             Version = _ApiVersion.ToString(3),
@@ -180,7 +180,7 @@ namespace MedicalResearch.SubjectData.WebAPI {
 
         app.UseSwagger(o => {
           //warning: needs subfolder! jsons cant be within same dir as swaggerui (below)
-          o.RouteTemplate = "docs/schema/{documentName}.{json|yaml}";
+          o.RouteTemplate = "docs/schema/{documentName}.swagger.{json|yaml}";
           //o.SerializeAsV2 = true;
         });
 
@@ -194,9 +194,8 @@ namespace MedicalResearch.SubjectData.WebAPI {
           c.DocumentTitle = _ApiTitle + " - OpenAPI Definition(s)";
 
           //represents the sorting in SwaggerUI combo-box
-          c.SwaggerEndpoint("schema/ApiV1.json", _ApiTitle + "-API v" + _ApiVersion.ToString(3));
-          //c.SwaggerEndpoint("schema/StoreAccessV1.json", _ApiTitle + "-StoreAccess v" + _ApiVersion.ToString(3));
-      
+          c.SwaggerEndpoint($"schema/ApiV{_ApiVersion.ToString(1)}.swagger.json", $"{_ApiTitle}-API v{_ApiVersion.ToString(3)}");
+
           c.RoutePrefix = "docs";
 
           //requires MVC app.UseStaticFiles();

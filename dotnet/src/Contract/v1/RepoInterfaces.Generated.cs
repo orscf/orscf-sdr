@@ -5,11 +5,15 @@ using System.Collections.ObjectModel;
 
 namespace MedicalResearch.SubjectData.StoreAccess {
 
-  /// <summary> Provides CRUD access to stored Subjects (based on schema version '0.1.0') </summary>
+  public static class ApiVersion {
+    public const string SemanticVersion = "2.0.0";
+  }
+
+  /// <summary> Provides CRUD access to stored Subjects (based on schema version '2.0.0') </summary>
   public partial interface ISubjectStore : System.Data.Fuse.IRepository<Subject, Guid> {
   }
 
-  /// <summary> Provides CRUD access to stored SubjectSiteAssignments (based on schema version '0.1.0') </summary>
+  /// <summary> Provides CRUD access to stored SubjectSiteAssignments (based on schema version '2.0.0') </summary>
   public partial interface ISubjectSiteAssignmentStore : System.Data.Fuse.IRepository<SubjectSiteAssignment, Guid> {
   }
 
