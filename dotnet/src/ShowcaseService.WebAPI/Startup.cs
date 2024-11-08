@@ -84,6 +84,7 @@ namespace MedicalResearch.SubjectData.WebAPI {
         c.IncludeXmlComments(outDir + "ORSCF.SubjectData.Contract.xml", true);
         c.IncludeXmlComments(outDir + "ORSCF.SubjectData.Service.xml", true);
         c.IncludeXmlComments(outDir + "ORSCF.SubjectData.Service.WebAPI.xml", true);
+        c.IncludeXmlComments(outDir + "FUSE-fx.RepositoryContract.xml", true);
 
         #region bearer
 
